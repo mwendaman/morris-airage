@@ -1,1 +1,777 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>✈️ The Morris AirSage App</title>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Morris AirSage"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#f2efe8"/>
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%238a6520'/><text y='.9em' font-size='70' x='15'>✈️</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#f2efe8;--surface:#fff;--surface2:#f8f6f1;--surface3:#ece9e1;--border:#ddd8ce;--border2:#c4bdb0;--gold:#8a6520;--gold-accent:#b8882c;--gold-dim:rgba(138,101,32,0.10);--text:#1e1b16;--text2:#3d3830;--muted:#7a7468;--muted2:#5e5850;--teal:#0a6b5e;--green:#1a6b2e;--amber:#8a5200;--rose:#a02020;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 110% 55% at 50% -5%,rgba(138,101,32,0.07) 0%,transparent 55%),radial-gradient(ellipse 55% 55% at 92% 92%,rgba(10,107,94,0.04) 0%,transparent 50%);}
+header{position:relative;z-index:10;padding:1.4rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.8rem;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.brand{display:flex;align-items:center;gap:0.85rem;}
+.brand-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold-accent));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;box-shadow:0 2px 10px rgba(138,101,32,0.22);}
+.brand-name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--text);letter-spacing:0.02em;line-height:1;}
+.brand-tag{font-size:0.57rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted2);margin-top:2px;}
+.header-right{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;}
+.okc-badge{display:flex;align-items:center;gap:5px;background:var(--gold-dim);border:1px solid rgba(138,101,32,0.25);border-radius:7px;padding:4px 10px;font-size:0.7rem;font-weight:500;color:var(--gold);}
+.src-pill{font-size:0.57rem;font-weight:500;letter-spacing:0.09em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid;}
+.src-pill.g{border-color:#2a6dd9;color:#2a6dd9;background:rgba(42,109,217,0.07);}
+.src-pill.h{border-color:#7c22d4;color:#7c22d4;background:rgba(124,34,212,0.07);}
+.src-pill.k{border-color:#c44a00;color:#c44a00;background:rgba(196,74,0,0.07);}
+.tab-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;position:sticky;top:0;z-index:9;}
+.tab-btn{flex:0 0 auto;padding:0.8rem 1.1rem;font-family:'Outfit',sans-serif;font-size:0.78rem;font-weight:500;color:var(--muted2);background:none;border:none;border-bottom:2.5px solid transparent;cursor:pointer;white-space:nowrap;transition:color 0.2s,border-color 0.2s;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold-accent);font-weight:600;}
+main{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+.tab-panel{display:none;}.tab-panel.active{display:block;}
+.page-title{margin-bottom:1.6rem;text-align:center;}
+.page-title h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:0.4rem;}
+.page-title h2 em{color:var(--gold);font-style:italic;}
+.page-title p{font-size:0.85rem;color:var(--muted2);line-height:1.65;max-width:560px;margin:0 auto;}
+.rules-bar{display:flex;align-items:center;justify-content:center;gap:0.6rem;flex-wrap:wrap;margin-bottom:1.6rem;padding:0.75rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;}
+.rule-item{display:flex;align-items:center;gap:5px;font-size:0.7rem;color:var(--muted2);}
+.rule-item .dot{width:5px;height:5px;border-radius:50%;background:var(--gold-accent);flex-shrink:0;}
+.rule-sep{color:var(--border2);}
+.section-label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.85rem;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.2rem;box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+.form-row{display:grid;gap:1rem;margin-bottom:1.3rem;}
+.cols-2{grid-template-columns:1fr 1fr;}.cols-3{grid-template-columns:1fr 1fr 1fr;}
+.field{display:flex;flex-direction:column;gap:5px;}
+.field label{font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted2);font-weight:500;}
+.field input,.field select{background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:0.6rem 0.85rem;font-family:'Outfit',sans-serif;font-size:0.86rem;color:var(--text);outline:none;width:100%;-webkit-appearance:none;appearance:none;transition:border-color 0.2s,box-shadow 0.2s;}
+.field input:focus,.field select:focus{border-color:var(--gold-accent);box-shadow:0 0 0 3px rgba(138,101,32,0.10);}
+.field input::placeholder{color:var(--muted);}
+.field input[readonly]{color:var(--muted2);background:var(--surface3);cursor:default;}
+.pax-display{display:flex;align-items:center;gap:8px;background:var(--surface3);border:1.5px solid var(--border);border-radius:8px;padding:0.6rem 0.85rem;font-size:0.86rem;color:var(--text2);}
+.cabin-selector{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:1.3rem;}
+.cabin-option{position:relative;}
+.cabin-option input[type=radio]{position:absolute;opacity:0;width:0;height:0;}
+.cabin-label{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:1rem;text-align:center;background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;cursor:pointer;transition:all 0.2s;}
+.cabin-label:hover{border-color:var(--border2);}
+.cabin-option input:checked+.cabin-label{border-color:var(--gold-accent);background:var(--gold-dim);box-shadow:0 0 0 3px rgba(138,101,32,0.08);}
+.cabin-icon{font-size:1.4rem;}.cabin-name{font-size:0.78rem;font-weight:500;color:var(--text);}.cabin-desc{font-size:0.62rem;color:var(--muted2);line-height:1.4;}
+.predict-btn{width:100%;padding:0.9rem;background:var(--text);color:#f5eedc;border:none;border-radius:10px;font-family:'Outfit',sans-serif;font-size:0.9rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background 0.2s,transform 0.1s,box-shadow 0.2s;box-shadow:0 3px 12px rgba(30,27,22,0.18);}
+.predict-btn:hover:not(:disabled){background:#3a3328;transform:translateY(-1px);}
+.predict-btn:disabled{opacity:.38;cursor:not-allowed;transform:none;}
+.error-msg{display:none;padding:0.8rem 1.1rem;margin-bottom:1rem;background:rgba(160,32,32,0.06);border:1px solid rgba(160,32,32,0.22);border-radius:8px;color:var(--rose);font-size:0.83rem;text-align:center;}
+.error-msg.active{display:block;}
+.loading-state{display:none;text-align:center;padding:2.5rem 1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:16px;margin-bottom:1.2rem;}
+.loading-state.active{display:block;}
+.loading-plane{font-size:2.2rem;display:block;margin-bottom:0.8rem;animation:fly 2s ease-in-out infinite;}
+@keyframes fly{0%,100%{transform:translateX(-8px) rotate(-5deg);}50%{transform:translateX(8px) rotate(5deg);}}
+.loading-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--text);margin-bottom:0.3rem;}
+.loading-sub{font-size:0.76rem;color:var(--muted2);}
+.loading-sources{display:flex;align-items:center;justify-content:center;gap:1.2rem;margin-top:1.2rem;flex-wrap:wrap;}
+.loading-src{font-size:0.66rem;color:var(--muted);display:flex;align-items:center;gap:4px;}
+.pulse-dot{width:6px;height:6px;border-radius:50%;animation:pdot 1.5s ease-in-out infinite;}
+.pulse-dot.g{background:#2a6dd9;animation-delay:0s;}.pulse-dot.h{background:#7c22d4;animation-delay:0.4s;}.pulse-dot.k{background:#c44a00;animation-delay:0.8s;}.pulse-dot.a{background:#003366;animation-delay:1s;}
+@keyframes pdot{0%,100%{opacity:.3;transform:scale(.8);}50%{opacity:1;transform:scale(1.2);}}
+#results{display:none;}#results.active{display:block;}
+.results-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:0.4rem;}
+.results-header h3{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:700;color:var(--text);}
+.results-header .meta{font-size:0.7rem;color:var(--muted2);}
+.verdict-banner{border-radius:13px;padding:1.1rem 1.4rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:0.9rem;border:1.5px solid;}
+.verdict-banner.buy{background:rgba(26,107,46,0.07);border-color:rgba(26,107,46,0.30);}
+.verdict-banner.wait{background:rgba(138,82,0,0.07);border-color:rgba(138,82,0,0.30);}
+.verdict-banner.watch{background:rgba(10,107,94,0.07);border-color:rgba(10,107,94,0.30);}
+.verdict-icon{font-size:1.9rem;flex-shrink:0;}
+.verdict-action{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:3px;}
+.verdict-banner.buy .verdict-action{color:var(--green);}.verdict-banner.wait .verdict-action{color:var(--amber);}.verdict-banner.watch .verdict-action{color:var(--teal);}
+.verdict-summary{font-size:0.86rem;color:var(--text2);line-height:1.55;}
+.source-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:0.85rem;margin-bottom:1.2rem;}
+.source-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:1.05rem;}
+.source-card-header{display:flex;align-items:center;gap:6px;margin-bottom:0.7rem;}
+.source-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.source-dot.g{background:#2a6dd9;}.source-dot.h{background:#7c22d4;}.source-dot.k{background:#c44a00;}
+.source-card-name{font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;}
+.source-card.g .source-card-name{color:#2a6dd9;}.source-card.h .source-card-name{color:#7c22d4;}.source-card.k .source-card-name{color:#c44a00;}
+.source-signal{font-size:0.72rem;font-weight:600;margin-bottom:4px;}
+.signal-buy{color:var(--green);}.signal-wait{color:var(--amber);}.signal-watch{color:var(--teal);}
+.source-card-text{font-size:0.75rem;color:var(--muted2);line-height:1.55;}
+.price-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:1.4rem;margin-bottom:1.2rem;}
+.price-header{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.9rem;}
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
+.price-item-label{font-size:0.66rem;color:var(--muted2);margin-bottom:3px;}
+.price-item-value{font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:700;color:var(--text);line-height:1;}
+.price-item-value span{font-size:0.8rem;font-weight:400;color:var(--muted);margin-left:3px;}
+.price-item-sub{font-size:0.66rem;color:var(--muted);margin-top:3px;}
+.price-range{margin-top:0.9rem;padding-top:0.9rem;border-top:1px solid var(--border);}
+.range-label{font-size:0.68rem;color:var(--muted2);margin-bottom:7px;}
+.range-bar{height:5px;background:var(--surface3);border-radius:999px;position:relative;margin-bottom:5px;}
+.range-fill{position:absolute;top:0;height:100%;background:linear-gradient(90deg,var(--teal),var(--gold-accent));border-radius:999px;}
+.range-marker{position:absolute;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;background:var(--gold-accent);border:2px solid #fff;border-radius:50%;}
+.range-labels{display:flex;justify-content:space-between;font-size:0.65rem;color:var(--muted);}
+.range-labels .cur{color:var(--gold);font-weight:500;}
+.insight-cards{display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;margin-bottom:1.2rem;}
+.insight-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:1.1rem;}
+.insight-title{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted2);margin-bottom:0.6rem;font-weight:500;}
+.insight-val{font-family:'Cormorant Garamond',serif;font-size:1.18rem;font-weight:600;color:var(--text);margin-bottom:3px;}
+.insight-sub{font-size:0.72rem;color:var(--muted2);line-height:1.55;}
+.route-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:1.4rem;margin-bottom:1.2rem;}
+.route-title{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.8rem;}
+.route-text{font-size:0.82rem;color:var(--muted2);line-height:1.72;}
+.route-text strong{color:var(--text);font-weight:500;}
+.tips-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:1.4rem;margin-bottom:1.2rem;}
+.tips-title{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.8rem;}
+.tip-item{display:flex;gap:9px;align-items:flex-start;padding:0.55rem 0;border-bottom:1px solid var(--border);}
+.tip-item:last-child{border-bottom:none;padding-bottom:0;}
+.tip-num{width:20px;height:20px;flex-shrink:0;margin-top:1px;background:var(--gold-dim);border:1px solid rgba(138,101,32,0.28);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:600;color:var(--gold);}
+.tip-text{font-size:0.8rem;color:var(--muted2);line-height:1.55;}
+.tip-text strong{color:var(--text);font-weight:500;}
+.airline-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:0.6rem;margin-bottom:1rem;}
+.airline-btn{display:flex;align-items:center;gap:8px;padding:0.6rem 0.85rem;background:var(--surface);border:1.5px solid var(--border);border-radius:9px;text-decoration:none;font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:500;color:var(--text2);transition:all 0.18s;}
+.airline-btn:hover{border-color:var(--gold-accent);color:var(--gold);background:var(--gold-dim);transform:translateY(-1px);}
+.airline-emoji{font-size:0.85rem;font-weight:700;flex-shrink:0;font-family:monospace;background:var(--surface3);padding:2px 5px;border-radius:4px;}
+.airline-info{display:flex;flex-direction:column;gap:1px;}
+.airline-name{font-weight:500;font-size:0.75rem;line-height:1;}
+.airline-cabin{font-size:0.6rem;color:var(--muted);}
+.aggregator-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;}
+.agg-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:0.65rem 0.7rem;border-radius:8px;border:1.5px solid;background:transparent;font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:500;cursor:pointer;text-decoration:none;transition:background 0.18s;}
+.agg-btn.g{border-color:#2a6dd9;color:#2a6dd9;}.agg-btn.g:hover{background:rgba(42,109,217,0.08);}
+.agg-btn.h{border-color:#7c22d4;color:#7c22d4;}.agg-btn.h:hover{background:rgba(124,34,212,0.08);}
+.agg-btn.k{border-color:#c44a00;color:#c44a00;}.agg-btn.k:hover{background:rgba(196,74,0,0.08);}
+.dest-hero{display:flex;align-items:center;gap:1.2rem;padding:1.4rem 1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:16px;margin-bottom:1.2rem;}
+.dest-flag{font-size:3rem;flex-shrink:0;}
+.dest-hero-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--text);line-height:1.1;}
+.dest-hero-sub{font-size:0.78rem;color:var(--muted2);margin-top:3px;}
+.dest-hero-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+.dest-badge{font-size:0.6rem;font-weight:500;letter-spacing:0.08em;padding:2px 8px;border-radius:999px;border:1px solid;}
+.dest-badge.hub{border-color:var(--gold-accent);color:var(--gold);background:var(--gold-dim);}
+.dest-badge.airline{border-color:var(--border2);color:var(--muted2);background:var(--surface2);}
+.price-intel-section{margin-bottom:1.4rem;}
+.price-intel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.9rem;flex-wrap:wrap;gap:0.5rem;}
+.price-intel-title{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);font-weight:600;display:flex;align-items:center;gap:8px;flex:1;}
+.price-intel-title::after{content:'';height:1px;background:var(--border);flex:1;min-width:20px;}
+.check-prices-btn{display:flex;align-items:center;gap:6px;padding:0.5rem 1.1rem;background:var(--text);color:#f5eedc;border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:500;cursor:pointer;transition:background 0.18s,transform 0.1s;white-space:nowrap;}
+.check-prices-btn:hover:not(:disabled){background:#3a3328;transform:translateY(-1px);}
+.check-prices-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.airline-price-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:0.85rem;}
+.airline-price-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:1.1rem;transition:box-shadow 0.2s;}
+.airline-price-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.apc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.55rem;}
+.apc-name-row{display:flex;align-items:center;gap:7px;}
+.apc-code{font-size:0.7rem;font-weight:700;background:var(--surface3);padding:2px 6px;border-radius:4px;color:var(--text2);font-family:monospace;}
+.apc-name{font-size:0.82rem;font-weight:600;color:var(--text);}
+.apc-verdict{font-size:0.57rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;border-radius:999px;}
+.apc-verdict.buy{background:rgba(26,107,46,0.10);color:var(--green);border:1px solid rgba(26,107,46,0.25);}
+.apc-verdict.wait{background:rgba(138,82,0,0.10);color:var(--amber);border:1px solid rgba(138,82,0,0.25);}
+.apc-verdict.watch{background:rgba(10,107,94,0.10);color:var(--teal);border:1px solid rgba(10,107,94,0.25);}
+.apc-cabin{font-size:0.61rem;color:var(--muted2);margin-bottom:0.6rem;}
+.apc-prices{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.6rem;padding:0.6rem;background:var(--surface2);border-radius:8px;border:1px solid var(--border);}
+.apc-price-label{font-size:0.57rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.apc-price-val{font-family:'Cormorant Garamond',serif;font-size:1.28rem;font-weight:700;color:var(--text);line-height:1;}
+.apc-price-val span{font-size:0.63rem;color:var(--muted);font-weight:400;margin-left:2px;}
+.apc-price-sub{font-size:0.59rem;color:var(--muted);margin-top:1px;}
+.apc-mini-bar{margin-bottom:0.6rem;}
+.apc-mini-bar-track{height:4px;background:var(--surface3);border-radius:999px;position:relative;margin-bottom:4px;}
+.apc-mini-fill{position:absolute;top:0;height:100%;background:linear-gradient(90deg,var(--teal),var(--gold-accent));border-radius:999px;}
+.apc-mini-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:10px;height:10px;background:var(--gold-accent);border:2px solid #fff;border-radius:50%;}
+.apc-mini-labels{display:flex;justify-content:space-between;font-size:0.57rem;color:var(--muted);}
+.apc-miles-box{padding:0.55rem 0.65rem;background:rgba(10,107,94,0.06);border:1px solid rgba(10,107,94,0.18);border-radius:7px;margin-bottom:0.6rem;}
+.apc-miles-label{font-size:0.58rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--teal);font-weight:600;margin-bottom:3px;}
+.apc-miles-program{font-size:0.74rem;color:var(--text2);font-weight:500;}
+.apc-miles-sweet{font-size:0.67rem;color:var(--muted2);margin-top:2px;}
+.apc-best-time{font-size:0.73rem;color:var(--text2);line-height:1.5;padding-top:0.5rem;border-top:1px solid var(--border);}
+.apc-best-time strong{color:var(--gold);font-weight:600;}
+.apc-tip{font-size:0.7rem;color:var(--muted2);line-height:1.5;margin-top:0.3rem;}
+.apc-book-link{display:inline-flex;align-items:center;gap:4px;margin-top:0.6rem;font-size:0.68rem;font-weight:500;color:var(--gold);text-decoration:none;border:1px solid rgba(138,101,32,0.3);border-radius:5px;padding:3px 8px;background:var(--gold-dim);transition:background 0.18s;}
+.apc-book-link:hover{background:rgba(138,101,32,0.18);}
+.apc-loading{display:flex;align-items:center;justify-content:center;gap:8px;padding:1.4rem;background:var(--surface2);border-radius:13px;border:1px dashed var(--border);font-size:0.78rem;color:var(--muted2);grid-column:1/-1;}
+.apc-spinner{width:15px;height:15px;border:2px solid var(--border2);border-top-color:var(--gold-accent);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.apc-error{font-size:0.75rem;color:var(--rose);padding:0.8rem;background:rgba(160,32,32,0.05);border:1px solid rgba(160,32,32,0.18);border-radius:8px;grid-column:1/-1;text-align:center;}
+.intel-placeholder{font-size:0.78rem;color:var(--muted2);padding:1rem;grid-column:1/-1;text-align:center;}
+.disclaimer{font-size:0.65rem;color:var(--muted);text-align:center;line-height:1.6;padding:0 0.5rem;margin-top:0.5rem;}
+@media(max-width:640px){header{padding:1rem;}.header-right{display:none;}main{padding:1.2rem 0.9rem 3.5rem;}.cols-2,.cols-3{grid-template-columns:1fr;}.source-cards,.price-grid,.insight-cards,.cabin-selector,.aggregator-grid,.airline-price-grid{grid-template-columns:1fr;}.page-title h2{font-size:1.65rem;}.tab-btn{padding:0.7rem 0.9rem;font-size:0.74rem;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="brand-icon">&#9992;</div>
+    <div style="display:flex;flex-direction:column;gap:2px;">
+      <div class="brand-name">Morris AirSage ✈️</div>
+      <div class="brand-tag">The Morris Family Flight Intelligence App</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="okc-badge">OKC &middot; Will Rogers World</div>
+    <span class="src-pill g">Google Flights</span>
+    <span class="src-pill h">Hopper</span>
+    <span class="src-pill k">Kayak</span>
+  </div>
+</header>
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('predictor',this)">Fare Predictor</button>
+  <button class="tab-btn" onclick="switchTab('rome',this)">Rome</button>
+  <button class="tab-btn" onclick="switchTab('london',this)">London</button>
+  <button class="tab-btn" onclick="switchTab('thailand',this)">Thailand</button>
+  <button class="tab-btn" onclick="switchTab('japan',this)">Japan</button>
+  <button class="tab-btn" onclick="switchTab('newzealand',this)">New Zealand</button>
+</div>
+<main>
+<!-- PREDICTOR TAB -->
+<div class="tab-panel active" id="tab-predictor">
+  <div class="page-title"><h2>✈️ The Morris <em>AirSage</em> App</h2><p>AI predictions from Google Flights, Hopper &amp; Kayak plus direct airline tools &mdash; 2 passengers, Comfort+ or Business Class, round trip from OKC.</p></div>
+  <div class="rules-bar">
+    <div class="rule-item"><span class="dot"></span>Departs OKC</div><span class="rule-sep">&middot;</span>
+    <div class="rule-item"><span class="dot"></span>Round Trip</div><span class="rule-sep">&middot;</span>
+    <div class="rule-item"><span class="dot"></span>2 Passengers</div><span class="rule-sep">&middot;</span>
+    <div class="rule-item"><span class="dot"></span>Max 3 Stops</div><span class="rule-sep">&middot;</span>
+    <div class="rule-item"><span class="dot"></span>Max 6-hr Layover</div><span class="rule-sep">&middot;</span>
+    <div class="rule-item"><span class="dot"></span>Comfort+ or Business</div>
+  </div>
+  <div class="card">
+    <div class="section-label">Origin &amp; Return (Fixed)</div>
+    <div class="form-row cols-2">
+      <div class="field"><label>Departing From</label><input type="text" value="OKC - Will Rogers World Airport" readonly/></div>
+      <div class="field"><label>Returning To</label><input type="text" value="OKC - Will Rogers World Airport" readonly/></div>
+    </div>
+    <div class="section-label">Destination &amp; Travel Dates</div>
+    <div class="form-row cols-3">
+      <div class="field">
+        <label>Destination</label>
+        <select id="destination-select" onchange="updateDestInput()">
+          <option value="">-- Choose destination --</option>
+          <option value="Rome, Italy">Rome, Italy</option>
+          <option value="London, United Kingdom">London, UK</option>
+          <option value="Bangkok, Thailand">Bangkok, Thailand</option>
+          <option value="Tokyo, Japan">Tokyo, Japan</option>
+          <option value="Auckland, New Zealand">Auckland, New Zealand</option>
+          <option value="other">Other destination...</option>
+        </select>
+      </div>
+      <div class="field"><label>Outbound Date</label><input type="date" id="depart-date"/></div>
+      <div class="field"><label>Return Date</label><input type="date" id="return-date"/></div>
+    </div>
+    <div class="field" id="custom-dest-field" style="margin-bottom:1.3rem;display:none;">
+      <label>Custom Destination</label>
+      <input type="text" id="destination-custom" placeholder="e.g. Paris, Sydney, Dubai..."/>
+    </div>
+    <div class="section-label">Cabin Class</div>
+    <div class="cabin-selector">
+      <div class="cabin-option">
+        <input type="radio" name="cabin" id="cabin-comfort" value="Comfort Plus / Premium Economy" checked/>
+        <label class="cabin-label" for="cabin-comfort">
+          <span class="cabin-icon">&#128057;</span>
+          <span class="cabin-name">Comfort Plus / Premium Economy</span>
+          <span class="cabin-desc">Extra legroom &middot; Priority boarding &middot; Enhanced meals</span>
+        </label>
+      </div>
+      <div class="cabin-option">
+        <input type="radio" name="cabin" id="cabin-business" value="Business Class"/>
+        <label class="cabin-label" for="cabin-business">
+          <span class="cabin-icon">&#127960;</span>
+          <span class="cabin-name">Business Class</span>
+          <span class="cabin-desc">Lie-flat seats &middot; Lounge access &middot; Premium dining</span>
+        </label>
+      </div>
+    </div>
+    <div class="section-label">Passengers &amp; Routing (Fixed)</div>
+    <div class="form-row cols-2">
+      <div class="field"><label>Passengers</label><div class="pax-display">2 Adult Passengers (Fixed)</div></div>
+      <div class="field"><label>Stop &amp; Layover Rules</label><div class="pax-display">Max 3 stops &middot; Max 6-hr layover (Fixed)</div></div>
+    </div>
+    <div class="section-label">Optional Preferences</div>
+    <div class="form-row cols-3">
+      <div class="field"><label>Preferred Airlines</label><input type="text" id="airlines" placeholder="e.g. Delta, Qatar, JAL..."/></div>
+      <div class="field"><label>Date Flexibility</label>
+        <select id="flexibility">
+          <option value="exact">Exact dates only</option>
+          <option value="3days" selected>+/- 3 days</option>
+          <option value="1week">+/- 1 week</option>
+          <option value="2weeks">+/- 2 weeks</option>
+          <option value="flexible">Fully flexible</option>
+        </select>
+      </div>
+      <div class="field"><label>Priority</label>
+        <select id="budget-priority">
+          <option value="lowest">Lowest price</option>
+          <option value="balanced" selected>Price + convenience</option>
+          <option value="fewest-stops">Fewest stops</option>
+          <option value="shortest">Shortest total time</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row cols-2" style="margin-bottom:1.3rem;">
+      <div class="field">
+        <label>Preferred Connecting Hub from OKC</label>
+        <select id="hub-select" onchange="updateHubNote()">
+          <option value="any">Any / Best Available</option>
+          <option value="DFW">DFW &mdash; Dallas/Fort Worth (American, AA partners)</option>
+          <option value="ATL">ATL &mdash; Atlanta (Delta, Virgin Atlantic)</option>
+          <option value="ORD">ORD &mdash; Chicago O&#39;Hare (United, Lufthansa, Swiss)</option>
+          <option value="IAH">IAH &mdash; Houston (United, Star Alliance)</option>
+          <option value="LAX">LAX &mdash; Los Angeles (Pacific routes: JAL, ANA, Air NZ, Qantas)</option>
+          <option value="JFK">JFK/EWR &mdash; New York (all major carriers, transatlantic)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Hub Note</label>
+        <div class="pax-display" id="hub-note" style="font-size:0.78rem;">OKC connects to all hubs via short domestic hop</div>
+      </div>
+    </div>
+    <div class="error-msg" id="form-error">Please select a destination and both travel dates.</div>
+    <button class="predict-btn" id="predict-btn" onclick="runPrediction()">&#128302; Predict Best Fare Window</button>
+  </div>
+  <div class="loading-state" id="loading">
+    <span class="loading-plane">&#9992;</span>
+    <div class="loading-text">Analyzing fare patterns from OKC...</div>
+    <div class="loading-sub">Cross-referencing aggregators &amp; direct airline tools</div>
+    <div class="loading-sources">
+      <div class="loading-src"><span class="pulse-dot g"></span>Google Flights</div>
+      <div class="loading-src"><span class="pulse-dot h"></span>Hopper</div>
+      <div class="loading-src"><span class="pulse-dot k"></span>Kayak</div>
+      <div class="loading-src"><span class="pulse-dot a"></span>Direct Airlines</div>
+    </div>
+  </div>
+  <div id="results">
+    <div class="results-header"><h3 id="result-title">Fare Prediction</h3><span class="meta" id="result-meta"></span></div>
+    <div class="verdict-banner" id="verdict-banner"><div class="verdict-icon" id="verdict-icon"></div><div><div class="verdict-action" id="verdict-action"></div><div class="verdict-summary" id="verdict-summary"></div></div></div>
+    <div class="section-label">Aggregator Intelligence</div>
+    <div class="source-cards">
+      <div class="source-card g"><div class="source-card-header"><div class="source-dot g"></div><div class="source-card-name">Google Flights</div></div><div class="source-signal" id="gf-signal"></div><div class="source-card-text" id="gf-text"></div></div>
+      <div class="source-card h"><div class="source-card-header"><div class="source-dot h"></div><div class="source-card-name">Hopper</div></div><div class="source-signal" id="hp-signal"></div><div class="source-card-text" id="hp-text"></div></div>
+      <div class="source-card k"><div class="source-card-header"><div class="source-dot k"></div><div class="source-card-name">Kayak</div></div><div class="source-signal" id="kk-signal"></div><div class="source-card-text" id="kk-text"></div></div>
+    </div>
+    <div class="price-card">
+      <div class="price-header">Estimated Fare Range &mdash; 2 Passengers Round Trip</div>
+      <div class="price-grid">
+        <div><div class="price-item-label">Current Estimated Total</div><div class="price-item-value" id="price-current">&mdash;<span>USD</span></div><div class="price-item-sub" id="price-per-pax"></div></div>
+        <div><div class="price-item-label">Predicted Best Price</div><div class="price-item-value" id="price-best">&mdash;<span>USD</span></div><div class="price-item-sub" id="price-best-when"></div></div>
+      </div>
+      <div class="price-range">
+        <div class="range-label" id="range-label"></div>
+        <div class="range-bar"><div class="range-fill" id="range-fill"></div><div class="range-marker" id="range-marker"></div></div>
+        <div class="range-labels"><span id="range-low">Low</span><span class="cur">&#9650; Current</span><span id="range-high">High</span></div>
+      </div>
+    </div>
+    <div class="insight-cards">
+      <div class="insight-card"><div class="insight-title">Best Time to Book</div><div class="insight-val" id="best-book-time">&mdash;</div><div class="insight-sub" id="best-book-sub"></div></div>
+      <div class="insight-card"><div class="insight-title">Best Travel Window</div><div class="insight-val" id="best-travel-time">&mdash;</div><div class="insight-sub" id="best-travel-sub"></div></div>
+    </div>
+    <div class="route-card"><div class="route-title">OKC Route Intelligence</div><div class="route-text" id="route-text"></div></div>
+    <div class="tips-card"><div class="tips-title">Actionable Tips for This Route</div><div id="tips-list"></div></div>
+    <div class="section-label" style="margin-top:1.2rem;">Search Direct on Airlines</div>
+    <div class="airline-grid" id="dynamic-airline-grid"></div>
+    <div class="section-label">Search Aggregators</div>
+    <div class="aggregator-grid">
+      <a class="agg-btn g" id="gf-link" href="#" target="_blank">&#8599; Google Flights</a>
+      <a class="agg-btn h" id="hp-link" href="#" target="_blank">&#8599; Hopper</a>
+      <a class="agg-btn k" id="kk-link" href="#" target="_blank">&#8599; Kayak</a>
+    </div>
+    <div class="disclaimer">AirSage provides AI-synthesized fare predictions for informational purposes only. Always confirm fares directly with airlines before purchasing.</div>
+  </div>
+</div>
+<!-- DESTINATION TABS -->
+<div class="tab-panel" id="tab-rome">
+  <div class="dest-hero"><div class="dest-flag">&#127470;&#127481;</div><div><div class="dest-hero-title">Rome, Italy</div><div class="dest-hero-sub">Fiumicino (FCO) &middot; OKC to DFW or ORD then FCO</div><div class="dest-hero-badges"><span class="dest-badge hub">Hub: DFW (American)</span><span class="dest-badge hub">Hub: ORD (United)</span><span class="dest-badge hub">Hub: ATL (Delta)</span><span class="dest-badge airline">Qatar Airways</span><span class="dest-badge airline">Emirates</span><span class="dest-badge airline">Air Canada</span></div></div></div>
+  <div class="price-intel-section"><div class="price-intel-header"><span class="price-intel-title">Airline Price Intelligence &mdash; Rome</span><button class="check-prices-btn" id="check-btn-rome" onclick="checkAirlinePrices('rome')">&#128202; Check Airline Prices</button></div><div class="airline-price-grid" id="airline-price-grid-rome"><div class="intel-placeholder">Click <strong>Check Airline Prices</strong> to get AI-powered price predictions and booking windows for each airline on this route.</div></div></div>
+  <div class="section-label">Search Direct on Airlines</div>
+  <div class="airline-grid">
+    <a class="airline-btn" href="https://www.aa.com/booking/search" target="_blank"><span class="airline-emoji">AA</span><div class="airline-info"><span class="airline-name">American Airlines</span><span class="airline-cabin">Flagship Business via DFW</span></div></a>
+    <a class="airline-btn" href="https://www.qatarairways.com/en-us/book-a-trip.html" target="_blank"><span class="airline-emoji">QR</span><div class="airline-info"><span class="airline-name">Qatar Airways</span><span class="airline-cabin">Qsuite via Doha</span></div></a>
+    <a class="airline-btn" href="https://www.emirates.com/us/english/book/book-a-flight/" target="_blank"><span class="airline-emoji">EK</span><div class="airline-info"><span class="airline-name">Emirates</span><span class="airline-cabin">Business Suite via Dubai</span></div></a>
+    <a class="airline-btn" href="https://www.aircanada.com/us/en/aco/home/book.html" target="_blank"><span class="airline-emoji">AC</span><div class="airline-info"><span class="airline-name">Air Canada</span><span class="airline-cabin">Signature Business via YYZ</span></div></a>
+    <a class="airline-btn" href="https://www.united.com/en/us/book-flight/united-flights" target="_blank"><span class="airline-emoji">UA</span><div class="airline-info"><span class="airline-name">United Airlines</span><span class="airline-cabin">Polaris Business via ORD</span></div></a>
+    <a class="airline-btn" href="https://www.delta.com/us/en/book-a-trip/overview" target="_blank"><span class="airline-emoji">DL</span><div class="airline-info"><span class="airline-name">Delta Air Lines</span><span class="airline-cabin">Delta One via ATL</span></div></a>
+  </div>
+  <div class="section-label">Search Aggregators &mdash; Rome</div>
+  <div class="aggregator-grid">
+    <a class="agg-btn g" href="https://www.google.com/travel/flights?q=Flights+from+OKC+to+FCO" target="_blank">&#8599; Google Flights</a>
+    <a class="agg-btn h" href="https://www.hopper.com/flights/OKC/Rome" target="_blank">&#8599; Hopper</a>
+    <a class="agg-btn k" href="https://www.kayak.com/flights/OKC-FCO?sort=price_a" target="_blank">&#8599; Kayak</a>
+  </div>
+</div>
+<div class="tab-panel" id="tab-london">
+  <div class="dest-hero"><div class="dest-flag">&#127468;&#127463;</div><div><div class="dest-hero-title">London, United Kingdom</div><div class="dest-hero-sub">Heathrow (LHR) &middot; OKC to DFW or ATL then LHR</div><div class="dest-hero-badges"><span class="dest-badge hub">Hub: DFW (American/BA)</span><span class="dest-badge hub">Hub: ATL (Delta/Virgin)</span><span class="dest-badge airline">Qatar Airways</span><span class="dest-badge airline">Emirates</span><span class="dest-badge airline">Air Canada</span></div></div></div>
+  <div class="price-intel-section"><div class="price-intel-header"><span class="price-intel-title">Airline Price Intelligence &mdash; London</span><button class="check-prices-btn" id="check-btn-london" onclick="checkAirlinePrices('london')">&#128202; Check Airline Prices</button></div><div class="airline-price-grid" id="airline-price-grid-london"><div class="intel-placeholder">Click <strong>Check Airline Prices</strong> to get AI-powered price predictions for each airline.</div></div></div>
+  <div class="section-label">Search Direct on Airlines</div>
+  <div class="airline-grid">
+    <a class="airline-btn" href="https://www.britishairways.com/en-us/flights/find-and-book" target="_blank"><span class="airline-emoji">BA</span><div class="airline-info"><span class="airline-name">British Airways</span><span class="airline-cabin">Club World via DFW</span></div></a>
+    <a class="airline-btn" href="https://www.virginatlantic.com/us/en/book.html" target="_blank"><span class="airline-emoji">VS</span><div class="airline-info"><span class="airline-name">Virgin Atlantic</span><span class="airline-cabin">Upper Class via ATL</span></div></a>
+    <a class="airline-btn" href="https://www.aa.com/booking/search" target="_blank"><span class="airline-emoji">AA</span><div class="airline-info"><span class="airline-name">American Airlines</span><span class="airline-cabin">Flagship Business via DFW</span></div></a>
+    <a class="airline-btn" href="https://www.qatarairways.com/en-us/book-a-trip.html" target="_blank"><span class="airline-emoji">QR</span><div class="airline-info"><span class="airline-name">Qatar Airways</span><span class="airline-cabin">Qsuite via Doha</span></div></a>
+    <a class="airline-btn" href="https://www.emirates.com/us/english/book/book-a-flight/" target="_blank"><span class="airline-emoji">EK</span><div class="airline-info"><span class="airline-name">Emirates</span><span class="airline-cabin">Business Suite via Dubai</span></div></a>
+    <a class="airline-btn" href="https://www.aircanada.com/us/en/aco/home/book.html" target="_blank"><span class="airline-emoji">AC</span><div class="airline-info"><span class="airline-name">Air Canada</span><span class="airline-cabin">Signature via YYZ</span></div></a>
+    <a class="airline-btn" href="https://www.delta.com/us/en/book-a-trip/overview" target="_blank"><span class="airline-emoji">DL</span><div class="airline-info"><span class="airline-name">Delta Air Lines</span><span class="airline-cabin">Delta One via ATL</span></div></a>
+    <a class="airline-btn" href="https://www.united.com/en/us/book-flight/united-flights" target="_blank"><span class="airline-emoji">UA</span><div class="airline-info"><span class="airline-name">United Airlines</span><span class="airline-cabin">Polaris via ORD</span></div></a>
+  </div>
+  <div class="section-label">Search Aggregators &mdash; London</div>
+  <div class="aggregator-grid">
+    <a class="agg-btn g" href="https://www.google.com/travel/flights?q=Flights+from+OKC+to+LHR" target="_blank">&#8599; Google Flights</a>
+    <a class="agg-btn h" href="https://www.hopper.com/flights/OKC/London" target="_blank">&#8599; Hopper</a>
+    <a class="agg-btn k" href="https://www.kayak.com/flights/OKC-LHR?sort=price_a" target="_blank">&#8599; Kayak</a>
+  </div>
+</div>
+<div class="tab-panel" id="tab-thailand">
+  <div class="dest-hero"><div class="dest-flag">&#127481;&#127469;</div><div><div class="dest-hero-title">Bangkok, Thailand</div><div class="dest-hero-sub">Suvarnabhumi (BKK) &middot; OKC via Middle East or Asia hub</div><div class="dest-hero-badges"><span class="dest-badge hub">Hub: DFW to Doha (Qatar)</span><span class="dest-badge hub">Hub: DFW to Dubai (Emirates)</span><span class="dest-badge airline">Thai Airways</span><span class="dest-badge airline">EVA Air</span><span class="dest-badge airline">Air Canada</span></div></div></div>
+  <div class="price-intel-section"><div class="price-intel-header"><span class="price-intel-title">Airline Price Intelligence &mdash; Bangkok</span><button class="check-prices-btn" id="check-btn-thailand" onclick="checkAirlinePrices('thailand')">&#128202; Check Airline Prices</button></div><div class="airline-price-grid" id="airline-price-grid-thailand"><div class="intel-placeholder">Click <strong>Check Airline Prices</strong> to get AI-powered price predictions for each airline.</div></div></div>
+  <div class="section-label">Search Direct on Airlines</div>
+  <div class="airline-grid">
+    <a class="airline-btn" href="https://www.qatarairways.com/en-us/book-a-trip.html" target="_blank"><span class="airline-emoji">QR</span><div class="airline-info"><span class="airline-name">Qatar Airways</span><span class="airline-cabin">Qsuite via Doha</span></div></a>
+    <a class="airline-btn" href="https://www.emirates.com/us/english/book/book-a-flight/" target="_blank"><span class="airline-emoji">EK</span><div class="airline-info"><span class="airline-name">Emirates</span><span class="airline-cabin">Business Suite via Dubai</span></div></a>
+    <a class="airline-btn" href="https://www.thaiairways.com/en_US/book/search_flights/search_flights.page" target="_blank"><span class="airline-emoji">TG</span><div class="airline-info"><span class="airline-name">Thai Airways</span><span class="airline-cabin">Royal Silk Business</span></div></a>
+    <a class="airline-btn" href="https://www.evaair.com/en-global/book-a-flight/" target="_blank"><span class="airline-emoji">BR</span><div class="airline-info"><span class="airline-name">EVA Air</span><span class="airline-cabin">Royal Laurel via Taipei</span></div></a>
+    <a class="airline-btn" href="https://www.aircanada.com/us/en/aco/home/book.html" target="_blank"><span class="airline-emoji">AC</span><div class="airline-info"><span class="airline-name">Air Canada</span><span class="airline-cabin">Signature via YYZ</span></div></a>
+    <a class="airline-btn" href="https://www.singaporeair.com/en_UK/us/plan-travel/book-a-flight/" target="_blank"><span class="airline-emoji">SQ</span><div class="airline-info"><span class="airline-name">Singapore Airlines</span><span class="airline-cabin">Business via SIN</span></div></a>
+    <a class="airline-btn" href="https://www.united.com/en/us/book-flight/united-flights" target="_blank"><span class="airline-emoji">UA</span><div class="airline-info"><span class="airline-name">United Airlines</span><span class="airline-cabin">Polaris via IAH</span></div></a>
+  </div>
+  <div class="section-label">Search Aggregators &mdash; Thailand</div>
+  <div class="aggregator-grid">
+    <a class="agg-btn g" href="https://www.google.com/travel/flights?q=Flights+from+OKC+to+BKK" target="_blank">&#8599; Google Flights</a>
+    <a class="agg-btn h" href="https://www.hopper.com/flights/OKC/Bangkok" target="_blank">&#8599; Hopper</a>
+    <a class="agg-btn k" href="https://www.kayak.com/flights/OKC-BKK?sort=price_a" target="_blank">&#8599; Kayak</a>
+  </div>
+</div>
+<div class="tab-panel" id="tab-japan">
+  <div class="dest-hero"><div class="dest-flag">&#127471;&#127477;</div><div><div class="dest-hero-title">Tokyo, Japan</div><div class="dest-hero-sub">Haneda (HND) or Narita (NRT) &middot; OKC via IAH or LAX/SFO</div><div class="dest-hero-badges"><span class="dest-badge hub">Hub: IAH to HND (United)</span><span class="dest-badge hub">Hub: DFW to LAX (JAL/ANA)</span><span class="dest-badge airline">JAL</span><span class="dest-badge airline">ANA</span><span class="dest-badge airline">EVA Air</span><span class="dest-badge airline">Air Canada</span></div></div></div>
+  <div class="price-intel-section"><div class="price-intel-header"><span class="price-intel-title">Airline Price Intelligence &mdash; Tokyo</span><button class="check-prices-btn" id="check-btn-japan" onclick="checkAirlinePrices('japan')">&#128202; Check Airline Prices</button></div><div class="airline-price-grid" id="airline-price-grid-japan"><div class="intel-placeholder">Click <strong>Check Airline Prices</strong> to get AI-powered price predictions for each airline.</div></div></div>
+  <div class="section-label">Search Direct on Airlines</div>
+  <div class="airline-grid">
+    <a class="airline-btn" href="https://www.jal.com/en/inter/booking/" target="_blank"><span class="airline-emoji">JL</span><div class="airline-info"><span class="airline-name">Japan Airlines (JAL)</span><span class="airline-cabin">Sky Suite via LAX/DFW</span></div></a>
+    <a class="airline-btn" href="https://www.ana.co.jp/en/us/book-plan/flight/search/" target="_blank"><span class="airline-emoji">NH</span><div class="airline-info"><span class="airline-name">ANA</span><span class="airline-cabin">The Room via IAH/LAX</span></div></a>
+    <a class="airline-btn" href="https://www.evaair.com/en-global/book-a-flight/" target="_blank"><span class="airline-emoji">BR</span><div class="airline-info"><span class="airline-name">EVA Air</span><span class="airline-cabin">Royal Laurel via Taipei</span></div></a>
+    <a class="airline-btn" href="https://www.aircanada.com/us/en/aco/home/book.html" target="_blank"><span class="airline-emoji">AC</span><div class="airline-info"><span class="airline-name">Air Canada</span><span class="airline-cabin">Signature via YVR</span></div></a>
+    <a class="airline-btn" href="https://www.qatarairways.com/en-us/book-a-trip.html" target="_blank"><span class="airline-emoji">QR</span><div class="airline-info"><span class="airline-name">Qatar Airways</span><span class="airline-cabin">Qsuite via Doha</span></div></a>
+    <a class="airline-btn" href="https://www.emirates.com/us/english/book/book-a-flight/" target="_blank"><span class="airline-emoji">EK</span><div class="airline-info"><span class="airline-name">Emirates</span><span class="airline-cabin">Business Suite via Dubai</span></div></a>
+    <a class="airline-btn" href="https://www.united.com/en/us/book-flight/united-flights" target="_blank"><span class="airline-emoji">UA</span><div class="airline-info"><span class="airline-name">United Airlines</span><span class="airline-cabin">Polaris via IAH</span></div></a>
+    <a class="airline-btn" href="https://www.aa.com/booking/search" target="_blank"><span class="airline-emoji">AA</span><div class="airline-info"><span class="airline-name">American / JAL</span><span class="airline-cabin">Codeshare via DFW</span></div></a>
+  </div>
+  <div class="section-label">Search Aggregators &mdash; Japan</div>
+  <div class="aggregator-grid">
+    <a class="agg-btn g" href="https://www.google.com/travel/flights?q=Flights+from+OKC+to+Tokyo" target="_blank">&#8599; Google Flights</a>
+    <a class="agg-btn h" href="https://www.hopper.com/flights/OKC/Tokyo" target="_blank">&#8599; Hopper</a>
+    <a class="agg-btn k" href="https://www.kayak.com/flights/OKC-TYO?sort=price_a" target="_blank">&#8599; Kayak</a>
+  </div>
+</div>
+<div class="tab-panel" id="tab-newzealand">
+  <div class="dest-hero"><div class="dest-flag">&#127475;&#127487;</div><div><div class="dest-hero-title">Auckland, New Zealand</div><div class="dest-hero-sub">Auckland Airport (AKL) &middot; OKC via LAX or SFO to AKL</div><div class="dest-hero-badges"><span class="dest-badge hub">Hub: LAX to AKL (Air NZ/United)</span><span class="dest-badge hub">Hub: SFO to AKL (United)</span><span class="dest-badge airline">Air New Zealand</span><span class="dest-badge airline">Thai Airways</span><span class="dest-badge airline">EVA Air</span><span class="dest-badge airline">Air Canada</span></div></div></div>
+  <div class="price-intel-section"><div class="price-intel-header"><span class="price-intel-title">Airline Price Intelligence &mdash; Auckland</span><button class="check-prices-btn" id="check-btn-newzealand" onclick="checkAirlinePrices('newzealand')">&#128202; Check Airline Prices</button></div><div class="airline-price-grid" id="airline-price-grid-newzealand"><div class="intel-placeholder">Click <strong>Check Airline Prices</strong> to get AI-powered price predictions for each airline.</div></div></div>
+  <div class="section-label">Search Direct on Airlines</div>
+  <div class="airline-grid">
+    <a class="airline-btn" href="https://www.airnewzealand.com/book" target="_blank"><span class="airline-emoji">NZ</span><div class="airline-info"><span class="airline-name">Air New Zealand</span><span class="airline-cabin">Business Premier via LAX</span></div></a>
+    <a class="airline-btn" href="https://www.united.com/en/us/book-flight/united-flights" target="_blank"><span class="airline-emoji">UA</span><div class="airline-info"><span class="airline-name">United Airlines</span><span class="airline-cabin">Polaris via SFO</span></div></a>
+    <a class="airline-btn" href="https://www.qantas.com/us/en/book-a-trip/flights.html" target="_blank"><span class="airline-emoji">QF</span><div class="airline-info"><span class="airline-name">Qantas</span><span class="airline-cabin">Business via SYD</span></div></a>
+    <a class="airline-btn" href="https://www.qatarairways.com/en-us/book-a-trip.html" target="_blank"><span class="airline-emoji">QR</span><div class="airline-info"><span class="airline-name">Qatar Airways</span><span class="airline-cabin">Qsuite via DOH/SYD</span></div></a>
+    <a class="airline-btn" href="https://www.emirates.com/us/english/book/book-a-flight/" target="_blank"><span class="airline-emoji">EK</span><div class="airline-info"><span class="airline-name">Emirates</span><span class="airline-cabin">Business via DXB/SYD</span></div></a>
+    <a class="airline-btn" href="https://www.aircanada.com/us/en/aco/home/book.html" target="_blank"><span class="airline-emoji">AC</span><div class="airline-info"><span class="airline-name">Air Canada</span><span class="airline-cabin">Signature via YVR</span></div></a>
+    <a class="airline-btn" href="https://www.thaiairways.com/en_US/book/search_flights/search_flights.page" target="_blank"><span class="airline-emoji">TG</span><div class="airline-info"><span class="airline-name">Thai Airways</span><span class="airline-cabin">Royal Silk via BKK</span></div></a>
+    <a class="airline-btn" href="https://www.evaair.com/en-global/book-a-flight/" target="_blank"><span class="airline-emoji">BR</span><div class="airline-info"><span class="airline-name">EVA Air</span><span class="airline-cabin">Royal Laurel via TPE</span></div></a>
+    <a class="airline-btn" href="https://www.aa.com/booking/search" target="_blank"><span class="airline-emoji">AA</span><div class="airline-info"><span class="airline-name">American + Air NZ</span><span class="airline-cabin">Codeshare via LAX</span></div></a>
+  </div>
+  <div class="section-label">Search Aggregators &mdash; New Zealand</div>
+  <div class="aggregator-grid">
+    <a class="agg-btn g" href="https://www.google.com/travel/flights?q=Flights+from+OKC+to+Auckland" target="_blank">&#8599; Google Flights</a>
+    <a class="agg-btn h" href="https://www.hopper.com/flights/OKC/Auckland" target="_blank">&#8599; Hopper</a>
+    <a class="agg-btn k" href="https://www.kayak.com/flights/OKC-AKL?sort=price_a" target="_blank">&#8599; Kayak</a>
+  </div>
+</div>
+</main>
+<script>
+/* AirSage - Node.js validated. Zero template literals. All strings use concatenation. */
+
+function switchTab(tabId,btn){document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});document.getElementById('tab-'+tabId).classList.add('active');if(btn){btn.classList.add('active');}window.scrollTo({top:0,behavior:'smooth'});}
+function updateDestInput(){var sel=document.getElementById('destination-select').value;document.getElementById('custom-dest-field').style.display=(sel==='other')?'flex':'none';}
+function updateHubNote(){
+  var hub=document.getElementById('hub-select').value;
+  var notes={
+    'any':'OKC connects to all hubs via short domestic hop — best option selected automatically.',
+    'DFW':'Dallas hub: American Airlines and oneworld partners. Best for Europe, Middle East, and Caribbean.',
+    'ATL':'Atlanta hub: Delta and Virgin Atlantic. Excellent for Europe and transatlantic routes.',
+    'ORD':'Chicago OHare hub: United and Star Alliance. Strong for Europe, Asia, and Middle East.',
+    'IAH':'Houston hub: United Airlines. Best for direct Pacific routes and South America connections.',
+    'LAX':'Los Angeles hub: Ideal for Pacific — JAL, ANA, Air New Zealand, Qantas, EVA Air, Cathay.',
+    'JFK':'New York hub: All major carriers. Best for transatlantic to Europe and Middle East.'
+  };
+  var el=document.getElementById('hub-note');
+  if(el){el.textContent=notes[hub]||notes['any'];}
+}
+(function(){var t=new Date();var d1=new Date(t);d1.setDate(d1.getDate()+45);var d2=new Date(d1);d2.setDate(d2.getDate()+10);document.getElementById('depart-date').value=d1.toISOString().split('T')[0];document.getElementById('return-date').value=d2.toISOString().split('T')[0];})();
+function fmt(n){return '$'+Number(n).toLocaleString('en-US',{maximumFractionDigits:0});}
+function fmtMiles(n){return Number(n).toLocaleString('en-US')+' mi';}
+function boldMd(s){return(s||'').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');}
+function safeJSON(raw){var c=raw.replace(/```json|```/gi,'').trim();var b0=c.indexOf('{');var b1=c.lastIndexOf('}');if(b0!==-1&&b1!==-1){c=c.slice(b0,b1+1);}try{return JSON.parse(c);}catch(e1){try{return JSON.parse(c+'"]}');}catch(e2){try{return JSON.parse(c+']}');}catch(e3){return null;}}}}
+function safeJSONArray(raw){var c=raw.replace(/```json|```/gi,'').trim();var b0=c.indexOf('[');var b1=c.lastIndexOf(']');if(b0!==-1&&b1!==-1){c=c.slice(b0,b1+1);}try{return JSON.parse(c);}catch(e1){try{return JSON.parse(c+']');}catch(e2){return null;}}}
+
+var AL={
+  rome:{name:'Rome, Italy (FCO)',list:[
+    {code:'AA',name:'American Airlines',cabin:'Flagship Business',route:'OKC-DFW-FCO',loyalty:'AAdvantage',milesLow:57500,milesHigh:115000,sweet:'BA Avios or AAdvantage',url:'https://www.aa.com/booking/search'},
+    {code:'QR',name:'Qatar Airways',cabin:'Qsuite Business',route:'OKC-DFW-DOH-FCO',loyalty:'Privilege Club/Avios',milesLow:70000,milesHigh:110000,sweet:'BA Avios or AAdvantage',url:'https://www.qatarairways.com/en-us/book-a-trip.html'},
+    {code:'EK',name:'Emirates',cabin:'Business Suite',route:'OKC-DFW-DXB-FCO',loyalty:'Skywards',milesLow:72000,milesHigh:115000,sweet:'Emirates Skywards or Chase UR',url:'https://www.emirates.com/us/english/book/book-a-flight/'},
+    {code:'AC',name:'Air Canada',cabin:'Business Signature',route:'OKC-DFW-YYZ-FCO',loyalty:'Aeroplan',milesLow:55000,milesHigh:95000,sweet:'Aeroplan best Star Alliance rates',url:'https://www.aircanada.com/us/en/aco/home/book.html'},
+    {code:'UA',name:'United Airlines',cabin:'Polaris Business',route:'OKC-ORD-FCO',loyalty:'MileagePlus',milesLow:70000,milesHigh:120000,sweet:'United MileagePlus',url:'https://www.united.com/en/us/book-flight/united-flights'},
+    {code:'DL',name:'Delta Air Lines',cabin:'Delta One Suite',route:'OKC-ATL-FCO',loyalty:'SkyMiles',milesLow:80000,milesHigh:130000,sweet:'Virgin Atlantic Flying Club',url:'https://www.delta.com/us/en/book-a-trip/overview'},
+    {code:'LH',name:'Lufthansa',cabin:'Business Class',route:'OKC-DFW-FRA-FCO',loyalty:'Miles and More',milesLow:58000,milesHigh:100000,sweet:'Aeroplan or United MileagePlus',url:'https://www.lufthansa.com/us/en/homepage'}
+  ]},
+  london:{name:'London, UK (LHR)',list:[
+    {code:'BA',name:'British Airways',cabin:'Club World Business',route:'OKC-DFW-LHR',loyalty:'Executive Club Avios',milesLow:50000,milesHigh:90000,sweet:'BA Avios or AAdvantage',url:'https://www.britishairways.com/en-us/flights/find-and-book'},
+    {code:'VS',name:'Virgin Atlantic',cabin:'Upper Class',route:'OKC-ATL-LHR',loyalty:'Flying Club',milesLow:50000,milesHigh:95000,sweet:'Virgin Flying Club or Delta',url:'https://www.virginatlantic.com/us/en/book.html'},
+    {code:'AA',name:'American Airlines',cabin:'Flagship Business',route:'OKC-DFW-LHR',loyalty:'AAdvantage',milesLow:57500,milesHigh:115000,sweet:'AAdvantage or Avios',url:'https://www.aa.com/booking/search'},
+    {code:'QR',name:'Qatar Airways',cabin:'Qsuite Business',route:'OKC-DFW-DOH-LHR',loyalty:'Privilege Club/Avios',milesLow:65000,milesHigh:105000,sweet:'BA Avios partner redemption',url:'https://www.qatarairways.com/en-us/book-a-trip.html'},
+    {code:'EK',name:'Emirates',cabin:'Business Suite',route:'OKC-DFW-DXB-LHR',loyalty:'Skywards',milesLow:72000,milesHigh:115000,sweet:'Emirates Skywards or Chase UR',url:'https://www.emirates.com/us/english/book/book-a-flight/'},
+    {code:'AC',name:'Air Canada',cabin:'Business Signature',route:'OKC-DFW-YYZ-LHR',loyalty:'Aeroplan',milesLow:55000,milesHigh:90000,sweet:'Aeroplan excellent Star rates',url:'https://www.aircanada.com/us/en/aco/home/book.html'},
+    {code:'DL',name:'Delta Air Lines',cabin:'Delta One Suite',route:'OKC-ATL-LHR',loyalty:'SkyMiles',milesLow:75000,milesHigh:120000,sweet:'Virgin Flying Club transfer',url:'https://www.delta.com/us/en/book-a-trip/overview'},
+    {code:'UA',name:'United Airlines',cabin:'Polaris Business',route:'OKC-ORD-LHR',loyalty:'MileagePlus',milesLow:60000,milesHigh:110000,sweet:'United MileagePlus',url:'https://www.united.com/en/us/book-flight/united-flights'}
+  ]},
+  thailand:{name:'Bangkok, Thailand (BKK)',list:[
+    {code:'QR',name:'Qatar Airways',cabin:'Qsuite Business',route:'OKC-DFW-DOH-BKK',loyalty:'Privilege Club/Avios',milesLow:70000,milesHigh:110000,sweet:'BA Avios or AAdvantage',url:'https://www.qatarairways.com/en-us/book-a-trip.html'},
+    {code:'EK',name:'Emirates',cabin:'Business Suite',route:'OKC-DFW-DXB-BKK',loyalty:'Skywards',milesLow:77500,milesHigh:130000,sweet:'Emirates Skywards or Chase UR',url:'https://www.emirates.com/us/english/book/book-a-flight/'},
+    {code:'TG',name:'Thai Airways',cabin:'Royal Silk Business',route:'OKC-hub-BKK',loyalty:'Royal Orchid Plus',milesLow:65000,milesHigh:110000,sweet:'United MileagePlus or Aeroplan',url:'https://www.thaiairways.com/en_US/book/search_flights/search_flights.page'},
+    {code:'BR',name:'EVA Air',cabin:'Royal Laurel Business',route:'OKC-DFW-TPE-BKK',loyalty:'Infinity MileageLands',milesLow:65000,milesHigh:105000,sweet:'United MileagePlus best sweet spot',url:'https://www.evaair.com/en-global/book-a-flight/'},
+    {code:'SQ',name:'Singapore Airlines',cabin:'Business Class',route:'OKC-IAH-SIN-BKK',loyalty:'KrisFlyer',milesLow:67000,milesHigh:115000,sweet:'KrisFlyer or Virgin Flying Club',url:'https://www.singaporeair.com/en_UK/us/plan-travel/book-a-flight/'},
+    {code:'AC',name:'Air Canada',cabin:'Business Signature',route:'OKC-DFW-YYZ-BKK',loyalty:'Aeroplan',milesLow:75000,milesHigh:120000,sweet:'Aeroplan Thai Airways Star Alliance',url:'https://www.aircanada.com/us/en/aco/home/book.html'},
+    {code:'UA',name:'United Airlines',cabin:'Polaris Business',route:'OKC-IAH-NRT-BKK',loyalty:'MileagePlus',milesLow:80000,milesHigh:125000,sweet:'United MileagePlus',url:'https://www.united.com/en/us/book-flight/united-flights'},
+    {code:'DL',name:'Delta Air Lines',cabin:'Delta One Suite',route:'OKC-ATL-NRT-BKK',loyalty:'SkyMiles',milesLow:85000,milesHigh:135000,sweet:'Korean Air SkyTeam or Flying Blue',url:'https://www.delta.com/us/en/book-a-trip/overview'}
+  ]},
+  japan:{name:'Tokyo, Japan (HND/NRT)',list:[
+    {code:'JL',name:'Japan Airlines JAL',cabin:'Sky Suite Business',route:'OKC-DFW-LAX-NRT',loyalty:'JAL Mileage Bank/Alaska',milesLow:60000,milesHigh:80000,sweet:'Alaska MileagePlan 60k OW best value',url:'https://www.jal.com/en/inter/booking/'},
+    {code:'NH',name:'ANA',cabin:'The Room Business',route:'OKC-IAH-HND',loyalty:'ANA Mileage Club/United',milesLow:55000,milesHigh:85000,sweet:'United MileagePlus or Virgin Flying Club',url:'https://www.ana.co.jp/en/us/book-plan/flight/search/'},
+    {code:'BR',name:'EVA Air',cabin:'Royal Laurel Business',route:'OKC-DFW-TPE-NRT',loyalty:'Infinity MileageLands',milesLow:55000,milesHigh:85000,sweet:'United MileagePlus EVA sweet spot',url:'https://www.evaair.com/en-global/book-a-flight/'},
+    {code:'AC',name:'Air Canada',cabin:'Business Signature',route:'OKC-DFW-YVR-NRT',loyalty:'Aeroplan',milesLow:75000,milesHigh:115000,sweet:'Aeroplan ANA/JAL Star Alliance',url:'https://www.aircanada.com/us/en/aco/home/book.html'},
+    {code:'QR',name:'Qatar Airways',cabin:'Qsuite Business',route:'OKC-DFW-DOH-NRT',loyalty:'Privilege Club/Avios',milesLow:75000,milesHigh:115000,sweet:'BA Avios or AAdvantage',url:'https://www.qatarairways.com/en-us/book-a-trip.html'},
+    {code:'EK',name:'Emirates',cabin:'Business Suite',route:'OKC-DFW-DXB-NRT',loyalty:'Skywards',milesLow:80000,milesHigh:125000,sweet:'Emirates Skywards or Chase UR',url:'https://www.emirates.com/us/english/book/book-a-flight/'},
+    {code:'UA',name:'United Airlines',cabin:'Polaris Business',route:'OKC-IAH-NRT',loyalty:'MileagePlus',milesLow:80000,milesHigh:120000,sweet:'United MileagePlus',url:'https://www.united.com/en/us/book-flight/united-flights'},
+    {code:'DL',name:'Delta Air Lines',cabin:'Delta One Suite',route:'OKC-ATL-SEA-HND',loyalty:'SkyMiles',milesLow:85000,milesHigh:130000,sweet:'Virgin Flying Club transfer',url:'https://www.delta.com/us/en/book-a-trip/overview'},
+    {code:'AA',name:'American / JAL',cabin:'Flagship/Sky Suite',route:'OKC-DFW-NRT',loyalty:'AAdvantage',milesLow:60000,milesHigh:90000,sweet:'AAdvantage or Alaska MileagePlan',url:'https://www.aa.com/booking/search'}
+  ]},
+  newzealand:{name:'Auckland, New Zealand (AKL)',list:[
+    {code:'NZ',name:'Air New Zealand',cabin:'Business Premier',route:'OKC-DFW-LAX-AKL',loyalty:'Airpoints/Oneworld',milesLow:80000,milesHigh:120000,sweet:'AAdvantage or Chase UR to Air NZ',url:'https://www.airnewzealand.com/book'},
+    {code:'UA',name:'United Airlines',cabin:'Polaris Business',route:'OKC-IAH-SFO-AKL',loyalty:'MileagePlus',milesLow:80000,milesHigh:130000,sweet:'United MileagePlus',url:'https://www.united.com/en/us/book-flight/united-flights'},
+    {code:'QF',name:'Qantas',cabin:'Business Suite',route:'OKC-DFW-LAX-SYD-AKL',loyalty:'Frequent Flyer',milesLow:80000,milesHigh:120000,sweet:'AA AAdvantage or BA Avios',url:'https://www.qantas.com/us/en/book-a-trip/flights.html'},
+    {code:'QR',name:'Qatar Airways',cabin:'Qsuite Business',route:'OKC-DFW-DOH-SYD-AKL',loyalty:'Privilege Club/Avios',milesLow:90000,milesHigh:135000,sweet:'BA Avios or AAdvantage',url:'https://www.qatarairways.com/en-us/book-a-trip.html'},
+    {code:'EK',name:'Emirates',cabin:'Business Suite',route:'OKC-DFW-DXB-SYD-AKL',loyalty:'Skywards',milesLow:95000,milesHigh:140000,sweet:'Emirates Skywards or Chase UR',url:'https://www.emirates.com/us/english/book/book-a-flight/'},
+    {code:'AC',name:'Air Canada',cabin:'Business Signature',route:'OKC-DFW-YVR-AKL',loyalty:'Aeroplan',milesLow:85000,milesHigh:130000,sweet:'Aeroplan Star Alliance partner',url:'https://www.aircanada.com/us/en/aco/home/book.html'},
+    {code:'TG',name:'Thai Airways',cabin:'Royal Silk Business',route:'OKC-hub-BKK-AKL',loyalty:'Royal Orchid Plus',milesLow:90000,milesHigh:135000,sweet:'United MileagePlus or Aeroplan',url:'https://www.thaiairways.com/en_US/book/search_flights/search_flights.page'},
+    {code:'BR',name:'EVA Air',cabin:'Royal Laurel Business',route:'OKC-DFW-TPE-AKL',loyalty:'Infinity MileageLands',milesLow:85000,milesHigh:130000,sweet:'United MileagePlus Star Alliance',url:'https://www.evaair.com/en-global/book-a-flight/'},
+    {code:'SQ',name:'Singapore Airlines',cabin:'Business Class',route:'OKC-IAH-SIN-AKL',loyalty:'KrisFlyer',milesLow:85000,milesHigh:130000,sweet:'KrisFlyer or Amex MR transfer',url:'https://www.singaporeair.com/en_UK/us/plan-travel/book-a-flight/'},
+    {code:'AA',name:'American + Air NZ',cabin:'Flagship/Business Premier',route:'OKC-DFW-LAX-AKL',loyalty:'AAdvantage',milesLow:75000,milesHigh:115000,sweet:'AAdvantage joint venture sweet spot',url:'https://www.aa.com/booking/search'}
+  ]}
+};
+
+var DKM={'Rome, Italy':'rome','London, United Kingdom':'london','Bangkok, Thailand':'thailand','Tokyo, Japan':'japan','Auckland, New Zealand':'newzealand'};
+var iLoad={};var iMode={};
+
+function renderIntelCards(destId,results,mode){
+  var grid=document.getElementById('airline-price-grid-'+destId);
+  if(!grid){return;}
+  var dest=AL[destId];if(!dest){return;}
+  var list=dest.list;
+  grid.innerHTML='';
+  var row=document.createElement('div');
+  row.style.cssText='grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.6rem;';
+  var lbl=document.createElement('span');
+  lbl.style.cssText='font-size:0.7rem;color:var(--muted2);';
+  lbl.textContent='2 passengers round trip from OKC \u2014 '+(mode==='cash'?'Cash prices':'Miles redemption');
+  var wrap=document.createElement('div');
+  wrap.style.cssText='display:flex;gap:0;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;';
+  var cb=document.createElement('button');
+  cb.style.cssText='padding:5px 14px;font-family:Outfit,sans-serif;font-size:0.73rem;font-weight:500;border:none;cursor:pointer;background:'+(mode==='cash'?'var(--text)':'var(--surface2)')+';color:'+(mode==='cash'?'#f5eedc':'var(--muted2)')+';';
+  cb.textContent='$ Cash';
+  cb.setAttribute('data-dest',destId);
+  cb.addEventListener('click',function(){switchIntelMode(this.getAttribute('data-dest'),'cash');});
+  var mb=document.createElement('button');
+  mb.style.cssText='padding:5px 14px;font-family:Outfit,sans-serif;font-size:0.73rem;font-weight:500;border:none;border-left:1.5px solid var(--border);cursor:pointer;background:'+(mode==='miles'?'var(--text)':'var(--surface2)')+';color:'+(mode==='miles'?'#f5eedc':'var(--muted2)')+';';
+  mb.textContent='Miles';
+  mb.setAttribute('data-dest',destId);
+  mb.addEventListener('click',function(){switchIntelMode(this.getAttribute('data-dest'),'miles');});
+  wrap.appendChild(cb);wrap.appendChild(mb);row.appendChild(lbl);row.appendChild(wrap);grid.appendChild(row);
+  results.forEach(function(r,i){
+    var a=list[i];if(!a||!r){return;}
+    var pos=Math.min(100,Math.max(0,Number(r.rangePosition)||50));
+    var fL=Math.max(0,pos-36);var fR=Math.max(0,100-Math.min(100,pos+36));
+    var vc=r.verdict||'watch';
+    var vl=vc==='buy'?'Book Now':vc==='wait'?'Wait':'Watch';
+    var rt=a.route.replace(/-/g,' \u2192 ');
+    var cashB='<div class="apc-prices">'
+      +'<div><div class="apc-price-label">Current (2 pax)</div><div class="apc-price-val">'+fmt(r.priceCurrent||0)+'<span>USD</span></div><div class="apc-price-sub">'+(r.pricePerPax||'')+'</div></div>'
+      +'<div><div class="apc-price-label">Best Price</div><div class="apc-price-val">'+fmt(r.priceBest||0)+'<span>USD</span></div><div class="apc-price-sub">'+(r.priceBestWhen||'')+'</div></div>'
+      +'</div>'
+      +'<div class="apc-mini-bar"><div class="apc-mini-bar-track">'
+      +'<div class="apc-mini-fill" style="left:'+fL+'%;right:'+fR+'%;"></div>'
+      +'<div class="apc-mini-dot" style="left:'+pos+'%;"></div>'
+      +'</div><div class="apc-mini-labels"><span>'+fmt(r.priceLow||0)+'</span><span style="color:var(--gold);font-weight:500">&#9650; Now</span><span>'+fmt(r.priceHigh||0)+'</span></div></div>';
+    var milesB='<div class="apc-prices">'
+      +'<div><div class="apc-price-label">Low (per person OW)</div><div class="apc-price-val" style="font-size:1.05rem">'+fmtMiles(a.milesLow)+'</div><div class="apc-price-sub">+ taxes &amp; fees</div></div>'
+      +'<div><div class="apc-price-label">High (per person OW)</div><div class="apc-price-val" style="font-size:1.05rem">'+fmtMiles(a.milesHigh)+'</div><div class="apc-price-sub">+ taxes &amp; fees</div></div>'
+      +'</div>'
+      +'<div class="apc-miles-box"><div class="apc-miles-label">Best Program</div><div class="apc-miles-program">'+a.loyalty+'</div><div class="apc-miles-sweet">Sweet spot: '+a.sweet+'</div></div>';
+    var card=document.createElement('div');
+    card.className='airline-price-card';
+    card.innerHTML='<div class="apc-header"><div class="apc-name-row"><span class="apc-code">'+a.code+'</span><span class="apc-name">'+a.name+'</span></div><span class="apc-verdict '+vc+'">'+vl+'</span></div>'
+      +'<div class="apc-cabin">'+a.cabin+' &middot; <span style="color:var(--muted)">'+rt+'</span></div>'
+      +(mode==='cash'?cashB:milesB)
+      +'<div class="apc-best-time"><strong>Best time:</strong> '+(r.bestBookTime||'Check airline site')+'<br><span class="apc-tip">'+(r.bestBookTip||'')+'</span></div>'
+      +'<a class="apc-book-link" href="'+a.url+'" target="_blank">&#8599; Book on '+a.name.split(' ')[0]+'</a>';
+    grid.appendChild(card);
+  });
+}
+
+function switchIntelMode(destId,mode){iMode[destId]=mode;if(iLoad[destId]){renderIntelCards(destId,iLoad[destId],mode);}}
+
+async function checkAirlinePrices(destId){
+  var btn=document.getElementById('check-btn-'+destId);
+  var grid=document.getElementById('airline-price-grid-'+destId);
+  var dest=AL[destId];if(!dest){return;}
+  btn.disabled=true;btn.textContent='Fetching...';
+  grid.innerHTML='<div class="apc-loading"><div class="apc-spinner"></div>Fetching price intelligence for all airlines on this route...</div>';
+  var count=dest.list.length;
+  var aLines=dest.list.map(function(a,i){return (i+1)+'. '+a.name+' - '+a.cabin+' - '+a.route.replace(/-/g,' to ');}).join('\n');
+  var prompt='You are AirSage, an expert airfare analyst.\n\n'
+    +'Route: Oklahoma City OKC to '+dest.name+' (round trip, 2 adults)\n'
+    +'Cabin: Business Class or Premium Economy | Max stops: 3 | Max layover: 6 hours\n\n'
+    +'Analyze these '+count+' airlines:\n'+aLines+'\n\n'
+    +'Provide realistic Business Class or Premium Economy round trip prices for 2 passengers from OKC.\n'
+    +'CRITICAL: Return EXACTLY '+count+' objects in the same order. Complete all entries. Close all JSON brackets.\n\n'
+    +'Return ONLY a JSON array, no markdown:\n'
+    +'[{"verdict":"buy","priceCurrent":7200,"priceBest":5800,"pricePerPax":"~$3600 per person","priceBestWhen":"In 4-6 weeks","priceLow":5200,"priceHigh":9800,"rangePosition":45,"bestBookTime":"6-8 weeks before departure","bestBookTip":"Specific OKC routing tip for this airline."}]';
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true','anthropic-version':'2023-06-01'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2500,messages:[{role:'user',content:prompt}]})
+    });
+    if(!res.ok){var et=await res.text();throw new Error('API '+res.status+': '+et);}
+    var resp=await res.json();
+    var raw=(resp.content||[]).map(function(b){return b.text||'';}).join('');
+    var results=safeJSONArray(raw);
+    if(!results){throw new Error('Could not parse response as JSON array');}
+    while(results.length<count){results.push({verdict:'watch',priceCurrent:6000,priceBest:5000,pricePerPax:'~$3000 per person',priceBestWhen:'Check airline site',priceLow:4500,priceHigh:8000,rangePosition:50,bestBookTime:'6-8 weeks out',bestBookTip:'Search directly on the airline website for latest fares from OKC.'});}
+    iLoad[destId]=results;iMode[destId]=iMode[destId]||'cash';
+    renderIntelCards(destId,results,iMode[destId]);
+    btn.disabled=false;btn.textContent='Refresh Prices';
+  }catch(err){
+    console.error('Intel error:',err);
+    grid.innerHTML='<div class="apc-error">Could not fetch airline prices. '+err.message+'</div>';
+    btn.disabled=false;btn.textContent='Check Airline Prices';
+  }
+}
+
+async function runPrediction(){
+  var sel=document.getElementById('destination-select').value;
+  var customVal=document.getElementById('destination-custom').value.trim();
+  var dest=(sel==='other')?customVal:sel;
+  var departRaw=document.getElementById('depart-date').value;
+  var returnRaw=document.getElementById('return-date').value;
+  var errEl=document.getElementById('form-error');
+  if(!dest||!departRaw||!returnRaw){errEl.textContent='Please select a destination and both travel dates.';errEl.classList.add('active');return;}
+  errEl.classList.remove('active');
+  var cabin=document.querySelector('input[name="cabin"]:checked').value;
+  var hubSel=document.getElementById('hub-select');
+  var hub=hubSel?hubSel.value:'any';
+  var hubLabel=hubSel&&hubSel.selectedOptions[0]?hubSel.selectedOptions[0].text.split('--')[0].trim():'';
+  var airlines=document.getElementById('airlines').value.trim();
+  var flexibility=document.getElementById('flexibility').selectedOptions[0].text;
+  var priority=document.getElementById('budget-priority').selectedOptions[0].text;
+  var depart=new Date(departRaw+'T00:00');var ret=new Date(returnRaw+'T00:00');
+  var nights=Math.round((ret-depart)/864e5);var daysOut=Math.round((depart-new Date())/864e5);
+  var cabinSlug=cabin.toLowerCase().indexOf('business')>-1?'business':'premiumeconomy';
+  var destEnc=encodeURIComponent(dest);var destDash=dest.split(',')[0].trim().replace(/\s+/g,'-');var destKey=DKM[dest];
+  document.getElementById('gf-link').href='https://www.google.com/travel/flights?q=Flights+from+OKC+to+'+destEnc;
+  document.getElementById('hp-link').href='https://www.hopper.com/flights/OKC/'+destDash;
+  document.getElementById('kk-link').href='https://www.kayak.com/flights/OKC-anywhere/'+departRaw+'/'+returnRaw+'/2adults/'+cabinSlug+'?sort=price_a';
+  var grid=document.getElementById('dynamic-airline-grid');grid.innerHTML='';
+  var aList=destKey&&AL[destKey]?AL[destKey].list:[];
+  if(aList.length){aList.forEach(function(a){var el=document.createElement('a');el.className='airline-btn';el.href=a.url;el.target='_blank';el.innerHTML='<span class="airline-emoji">'+a.code+'</span><div class="airline-info"><span class="airline-name">'+a.name+'</span><span class="airline-cabin">'+a.cabin+'</span></div>';grid.appendChild(el);});}
+  else{grid.innerHTML='<p style="font-size:0.78rem;color:var(--muted2);grid-column:1/-1;">Search airlines via the aggregators below.</p>';}
+  document.getElementById('loading').classList.add('active');
+  document.getElementById('results').classList.remove('active');
+  document.getElementById('predict-btn').disabled=true;
+  document.getElementById('result-title').textContent='Fare Prediction  OKC to '+dest;
+  document.getElementById('result-meta').textContent=cabin+'  2 Passengers  '+departRaw+' to '+returnRaw+' ('+nights+' nights)';
+  var prompt='You are AirSage, an expert international airfare analyst.\n\n'
+    +'ROUTE: OKC (Will Rogers World Airport, Oklahoma City OK) to '+dest+'\n'
+    +'TRIP: Round trip  |  2 adult passengers  |  '+cabin+'\n'
+    +'DATES: '+departRaw+' outbound, '+returnRaw+' return ('+nights+' nights, '+daysOut+' days from now)\n'
+    +'CONSTRAINTS: Max 3 stops per direction, max 6-hr layover per stop\n'
+    +'FLEXIBILITY: '+flexibility+'  |  PRIORITY: '+priority+'\n'
+    +(hub!=='any'?'PREFERRED CONNECTING HUB: '+hub+' ('+hubLabel+') - route predictions should use this hub\n':'')
+    +(airlines?'PREFERRED AIRLINES: '+airlines+'\n':'')
+    +'\nOKC connects internationally via DFW, ORD, ATL, IAH, LAX/SFO.\n'
+    +'All prices must be for '+cabin+', 2 passengers, round trip from OKC.\n\n'
+    +'Analyze using Google Flights Price Insights, Hopper ML prediction, and Kayak Price Forecast methodologies.\n'
+    +'Provide REAL predictions for this route. Do not use placeholder text.\n\n'
+    +'Return ONLY valid JSON, no markdown:\n'
+    +'{"verdict":"buy","verdictIcon":"[green]","verdictAction":"BOOK NOW PRICES RISING","verdictSummary":"Two sentences.",'
+    +'"googleFlights":{"signal":"buy","signalLabel":"Buy Now","text":"2-3 sentences."},'
+    +'"hopper":{"signal":"wait","signalLabel":"Wait to Book","text":"2-3 sentences."},'
+    +'"kayak":{"signal":"watch","signalLabel":"Watch Prices","text":"2-3 sentences."},'
+    +'"priceCurrent":5800,"priceBest":4900,"pricePerPax":"~$2900 per person",'
+    +'"priceBestWhen":"In 3-5 weeks","priceLow":4200,"priceHigh":8800,'
+    +'"rangeLabel":"Context sentence.","rangePosition":45,'
+    +'"bestBookTime":"6-8 weeks before departure","bestBookSub":"Two sentences.",'
+    +'"bestTravelWindow":"Shoulder season","bestTravelSub":"Two sentences.",'
+    +'"routeIntel":"3-4 sentences on OKC routing, hubs, and tips.",'
+    +'"tips":['
+    +'{"tip":"**Set price alerts** on Google Flights, Hopper, and Kayak for this route."},'
+    +'{"tip":"**Connect through DFW or ORD** from OKC for the widest international options."},'
+    +'{"tip":"**Book midweek departures** from OKC for 10-15% savings on this route."},'
+    +'{"tip":"**Check award availability** for Business Class redemptions on this route."},'
+    +'{"tip":"**Compare direct airline sites** alongside aggregators for web-exclusive fares."}'
+    +']}';
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true','anthropic-version':'2023-06-01'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:prompt}]})
+    });
+    if(!res.ok){var et=await res.text();throw new Error('API '+res.status+': '+et);}
+    var data=await res.json();
+    var raw=(data.content||[]).map(function(b){return b.text||'';}).join('');
+    var d=safeJSON(raw);if(!d){throw new Error('Could not parse response');}
+    var banner=document.getElementById('verdict-banner');
+    banner.className='verdict-banner '+(d.verdict||'watch');
+    document.getElementById('verdict-icon').textContent=d.verdictIcon||'';
+    document.getElementById('verdict-action').textContent=d.verdictAction||'';
+    document.getElementById('verdict-summary').textContent=d.verdictSummary||'';
+    [['gf',d.googleFlights],['hp',d.hopper],['kk',d.kayak]].forEach(function(pair){
+      var pfx=pair[0];var src=pair[1];if(!src){return;}
+      var sig=document.getElementById(pfx+'-signal');
+      sig.textContent=src.signalLabel||'';sig.className='source-signal signal-'+(src.signal||'watch');
+      document.getElementById(pfx+'-text').textContent=src.text||'';
+    });
+    document.getElementById('price-current').innerHTML=fmt(d.priceCurrent||0)+'<span>USD</span>';
+    document.getElementById('price-best').innerHTML=fmt(d.priceBest||0)+'<span>USD</span>';
+    document.getElementById('price-per-pax').textContent=d.pricePerPax||'';
+    document.getElementById('price-best-when').textContent=d.priceBestWhen||'';
+    document.getElementById('range-label').textContent=d.rangeLabel||'';
+    document.getElementById('range-low').textContent=fmt(d.priceLow||0);
+    document.getElementById('range-high').textContent=fmt(d.priceHigh||0);
+    var pos=Math.min(100,Math.max(0,Number(d.rangePosition)||50));
+    document.getElementById('range-fill').style.left=Math.max(0,pos-36)+'%';
+    document.getElementById('range-fill').style.right=Math.max(0,100-Math.min(100,pos+36))+'%';
+    document.getElementById('range-marker').style.left=pos+'%';
+    document.getElementById('best-book-time').textContent=d.bestBookTime||'';
+    document.getElementById('best-book-sub').textContent=d.bestBookSub||'';
+    document.getElementById('best-travel-time').textContent=d.bestTravelWindow||'';
+    document.getElementById('best-travel-sub').textContent=d.bestTravelSub||'';
+    document.getElementById('route-text').innerHTML=boldMd(d.routeIntel||'');
+    var tl=document.getElementById('tips-list');tl.innerHTML='';
+    var fb=[{tip:'**Set price alerts** on Google Flights, Hopper, and Kayak for this route.'},{tip:'**Connect through DFW or ORD** for the widest international partner options from OKC.'},{tip:'**Book midweek departures** from OKC - Tuesday and Wednesday flights run 10-15% cheaper.'},{tip:'**Check award availability** - Business Class on this route can often be redeemed with miles.'},{tip:'**Compare direct airline sites** alongside aggregators for exclusive web-only fares.'}];
+    var tips=(d.tips&&d.tips.length>0)?d.tips:fb;
+    tips.forEach(function(t,i){var txt=t.tip||t.text||'';if(!txt){return;}var el=document.createElement('div');el.className='tip-item';el.innerHTML='<div class="tip-num">'+(i+1)+'</div><div class="tip-text">'+boldMd(txt)+'</div>';tl.appendChild(el);});
+    document.getElementById('loading').classList.remove('active');
+    document.getElementById('results').classList.add('active');
+    document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(err){
+    console.error('AirSage error:',err);
+    document.getElementById('loading').classList.remove('active');
+    errEl.textContent='Prediction failed: '+err.message;errEl.classList.add('active');
+  }
+  document.getElementById('predict-btn').disabled=false;
+}
+</script>
+</body>
+</html>
